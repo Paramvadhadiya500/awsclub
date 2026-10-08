@@ -1,0 +1,101 @@
+"use client";
+
+import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
+import { WordsPreloader } from "@/components/ui/WordsPreloader";
+import { HeroSection } from "@/components/sections/HeroSection";
+import { StaggeredMenu } from "@/components/navigation/StaggeredMenu";
+import { AboutSection } from "@/components/sections/AboutSection";
+import { EventsSection } from "@/components/sections/EventsSection";
+import { MeetupSection } from "@/components/sections/MeetupSection";
+import { TeamSection } from "@/components/sections/TeamSection";
+import { FAQSection } from "@/components/sections/FAQSection";
+import { ContactSection } from "@/components/sections/ContactSection";
+import { Footer } from "@/components/sections/Footer";
+import { ScrollToTop } from "@/components/ui/scroll-to-top";
+import { FloatingEventToast } from "@/components/ui/FloatingEventToast";
+import { CircuitBridgeTrack } from "@/components/ui/circuit-bridge-track";
+import { MobileCircuitRail } from "@/components/ui/mobile-circuit-rail";
+
+let hasShownPreloader = false;
+
+export default function Home() {
+  const [isLoading, setIsLoading] = useState(!hasShownPreloader);
+
+  const handlePreloaderComplete = () => {
+    hasShownPreloader = true;
+    setIsLoading(false);
+  };
+
+  return (
+    <>
+      <AnimatePresence mode="wait">
+        {isLoading && (
+          <WordsPreloader onComplete={handlePreloaderComplete} />
+        )}
+      </AnimatePresence>
+
+      <main className="min-h-screen w-full max-w-[100vw] overflow-x-hidden bg-black text-white relative selection:bg-[#00e676] selection:text-[#0b0f19] font-[var(--font-space-grotesk)]">
+      {/* Top Staggered Menu Navigation */}
+      <StaggeredMenu
+        colors={["#0f172a", "#064e3b", "#00e676"]}
+        accentColor="#00e676"
+        items={[
+          { label: "Home", ariaLabel: "Home", link: "#home" },
+          { label: "About", ariaLabel: "About Us", link: "#about" },
+          { label: "Events", ariaLabel: "Events", link: "#events" },
+          { label: "Teams", ariaLabel: "Core Team", link: "#teams" },
+          { label: "FAQ", ariaLabel: "Frequently Asked Questions", link: "#faq" },
+          { label: "Contacts", ariaLabel: "Contact Us", link: "#contacts" },
+        ]}
+        socialItems={[
+          { label: "Meetup", link: "https://www.meetup.com/aws-sbg-at-charotar-university-of-science-and-technology/" },
+          { label: "LinkedIn", link: "https://www.linkedin.com/company/asc-charusat/posts/?feedView=all" },
+          { label: "Instagram", link: "https://www.instagram.com/awssbg_charusat/" },
+        ]}
+      />
+
+      {/* 1. HERO SECTION */}
+      <section id="home" className="relative w-full min-h-screen">
+        <HeroSection />
+      </section>
+
+      {/* S-Rail Leg 1: Hero (Join Community) ➔ About SBG */}
+      <CircuitBridgeTrack variant="hero-to-about" className="hidden md:block -mt-16 md:-mt-20 relative z-30" />
+      <MobileCircuitRail variant="hero-to-about" className="block md:hidden relative z-30" />
+
+      {/* 2. ABOUT US SECTION (Dot Background & Nothing Font Style) */}
+      <section id="about" className="relative min-h-[auto] md:min-h-screen w-full">
+        <AboutSection />
+      </section>
+
+      {/* S-Rail Leg 2: About SBG ➔ Events (Desktop only) */}
+      <CircuitBridgeTrack variant="about-to-events" className="hidden md:block" />
+
+      {/* 3. EVENTS & WORKSHOPS SECTION */}
+      <EventsSection />
+
+      {/* 3.5. MEETUP COMMUNITY HUB SECTION (Features Left-Flank Straight Cyber Rail) */}
+      <MeetupSection />
+
+      {/* 4. CORE TEAMS SECTION */}
+      <TeamSection />
+
+      {/* 5. FAQ SECTION */}
+      <FAQSection />
+
+      {/* 6. CONTACTS SECTION */}
+      <ContactSection />
+
+      {/* 7. FOOTER */}
+      <Footer />
+
+      {/* Floating Smooth Scroll to Top Button */}
+      <ScrollToTop />
+
+      {/* Subtle Floating Event Announcement Card */}
+      <FloatingEventToast />
+    </main>
+    </>
+  );
+}
